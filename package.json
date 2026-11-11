@@ -1,0 +1,19 @@
+{
+  "name": "baraclan.me",
+  "version": "1.0.0",
+  "description": "Portfolio Website for Vince Lawrence V. Baraclan",
+  "main": "gateServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ye-long-dragon/Baraclan.me.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ye-long-dragon/Baraclan.me/issues"
+  },
+  "homepage": "https://github.com/ye-long-dragon/Baraclan.me#readme"
+}
