@@ -9,3 +9,4 @@ Portfolio for Vince Lawrence V. Baraclan
 
 ### Day 3
 - Created the psuedocode for the ./client, autocompleted the entire service. Will study tomorrow.
+- Also added a scaling strategy for study.
