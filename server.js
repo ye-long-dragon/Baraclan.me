@@ -1,11 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const bcrypt = require('bcrypt');
-const { connectToDatabase } = require('./api/db');
-const { User, Skill, Experience, Project } = require('./api/models');
-const usersHandler = require('./api/users');
-const portfolioHandler = require('./api/portfolio');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
+import { connectToDatabase } from './api/db';
+import { User, Skill, Experience, Project } from './api/models';
+import usersHandler from './api/users';
+import portfolioHandler from './api/portfolio';
+
 
 dotenv.config();
 
