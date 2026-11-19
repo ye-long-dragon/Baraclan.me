@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Skill } from '../../../../dataTypes/dataTypesPortfolio';
+import { ImageDropzone } from '../ImageDropzone';
 
 interface SkillModalProps {
   isOpen: boolean;
@@ -8,7 +9,10 @@ interface SkillModalProps {
   onFormChange: (form: Skill) => void;
   onClose: () => void;
   onSave: (e: React.FormEvent) => void;
+  isLoading?: boolean;
 }
+
+const FOCUS_OPTIONS: Skill['focus'][] = ['Software', 'Hardware', 'Data', 'AI', 'Web'];
 
 export function SkillModal({
   isOpen,
@@ -17,18 +21,19 @@ export function SkillModal({
   onFormChange,
   onClose,
   onSave,
+  isLoading = false,
 }: SkillModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
-        <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/80 p-4 backdrop-blur-sm overflow-y-auto">
+      <div className="w-full max-w-lg rounded-xl border border-gold/40 bg-navy p-6 shadow-2xl font-main text-gold my-8">
+        <h3 className="font-name text-xl font-bold tracking-tight text-gold">
           {editingSkill ? 'Edit Skill' : 'Add New Skill'}
         </h3>
         <form onSubmit={onSave} className="mt-5 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+            <label className="block text-xs uppercase tracking-wider font-semibold text-gold">
               Skill Name *
             </label>
             <input
@@ -36,72 +41,66 @@ export function SkillModal({
               required
               value={skillForm.skillName}
               onChange={(e) => onFormChange({ ...skillForm, skillName: e.target.value })}
-              placeholder="e.g. React, Python, Embedded C++"
-              className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              placeholder="e.g. Embedded C++"
+              className="mt-1 w-full rounded border border-gold/30 bg-navy/60 px-3 py-2 text-sm text-sand placeholder:text-sand/40 focus:border-gold focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-              Focus Area
+            <label className="block text-xs uppercase tracking-wider font-semibold text-gold">
+              Focus Domain *
             </label>
             <select
               value={skillForm.focus}
               onChange={(e) =>
-                onFormChange({
-                  ...skillForm,
-                  focus: e.target.value as 'Software' | 'Hardware' | 'Data' | 'AI' | 'Web',
-                })
+                onFormChange({ ...skillForm, focus: e.target.value as Skill['focus'] })
               }
-              className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              className="mt-1 w-full rounded border border-gold/30 bg-navy px-3 py-2 text-sm text-sand focus:border-gold focus:outline-none"
             >
-              <option value="Web">Web</option>
-              <option value="Software">Software</option>
-              <option value="Hardware">Hardware</option>
-              <option value="Data">Data</option>
-              <option value="AI">AI</option>
+              {FOCUS_OPTIONS.map((opt) => (
+                <option key={opt} value={opt} className="bg-navy text-sand">
+                  {opt}
+                </option>
+              ))}
             </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-              Icon / Image URL
-            </label>
-            <input
-              type="text"
-              value={skillForm.img}
-              onChange={(e) => onFormChange({ ...skillForm, img: e.target.value })}
-              placeholder="https://... or leave empty"
-              className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-            />
-          </div>
+          {/* Image Dropzone with auto-resize/WebP compression */}
+          <ImageDropzone
+            value={skillForm.img}
+            onChange={(val) => onFormChange({ ...skillForm, img: val })}
+            label="Skill Icon/Badge (Drag & Drop or Pick PNG/JPEG/WebP)"
+          />
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-              Description
+            <label className="block text-xs uppercase tracking-wider font-semibold text-gold">
+              Description *
             </label>
             <textarea
+              required
               rows={3}
               value={skillForm.descrip}
               onChange={(e) => onFormChange({ ...skillForm, descrip: e.target.value })}
-              placeholder="Brief description of what you build with this..."
-              className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              placeholder="Short description of your proficiency..."
+              className="mt-1 w-full rounded border border-gold/30 bg-navy/60 px-3 py-2 text-sm text-sand placeholder:text-sand/40 focus:border-gold focus:outline-none"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3">
+          <div className="flex justify-end gap-3 pt-3">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-zinc-300 px-4 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              disabled={isLoading}
+              className="rounded border border-gold/40 px-4 py-2 text-xs uppercase tracking-wider text-gold transition hover:bg-gold/10 disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="rounded-xl bg-violet-600 px-5 py-2 text-xs font-semibold text-white hover:bg-violet-700"
+              disabled={isLoading}
+              className="rounded bg-gold px-5 py-2 text-xs uppercase tracking-widest font-bold text-navy transition hover:opacity-90 disabled:opacity-50"
             >
-              Save Skill
+              {isLoading ? 'Saving...' : editingSkill ? 'Update Skill' : 'Create Skill'}
             </button>
           </div>
         </form>
